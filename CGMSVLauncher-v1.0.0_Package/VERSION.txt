@@ -1,0 +1,14 @@
+CGMSV Launcher v1.0.0
+
+Build Information:
+- Version: 1.0.0
+- Author: sdrookie09
+- License: MIT
+- Description: Multi-CGMSV Instance Manager
+
+Release Notes:
+- Initial release
+- Multi-CGMSV instance management
+- Automatic window positioning
+- Real-time process monitoring
+- Configurable UI and settings

@@ -1,0 +1,26 @@
+# CGMSV Launcher v1.0.0 Usage Guide
+
+## How to Run
+1. Double-click CGMSVLauncher-v1.0.0.exe to run
+2. Or run `CGMSVLauncher-v1.0.0.exe` from command prompt
+
+## Main Features
+- Run multiple CGs simultaneously
+- Automatically move each CG window to specified position
+- Real-time CG status monitoring
+- Individual CG position adjustment and termination
+
+## Configuration File
+- Modify config.yml file to customize UI text, position settings, etc.
+- If config file is missing, runs with default settings
+
+## System Requirements
+- Windows 10/11
+- .NET Framework 4.5 or higher (installed by default on most Windows)
+
+## Troubleshooting
+- If execution fails: Visual C++ Redistributable installation required
+- If window positioning doesn't work: Try running as administrator
+
+## Support
+If problems occur, refer to README.md file.

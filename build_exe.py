@@ -72,7 +72,7 @@ def build_executable():
     ]
     
     # Remove icon if not available
-    if not os.path.exists("icon.ico"):
+    if not os.path.exists("icon6.0.ico"):
         cmd.remove("--icon=icon.ico")
     
     try:

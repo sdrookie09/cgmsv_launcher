@@ -21,11 +21,11 @@ class ConfigManager:
     def get_default_config(self):
         """Get default configuration"""
         return {
-            'launcher': {'title': 'Multi-Program Launcher', 'window_size': '900x700', 'log_height': 12},
+            'launcher': {'title': 'CGMSV Launcher', 'window_size': '900x700', 'log_height': 12},
             'ui': {
-                'add_program': {'title': 'Add New Program', 'program_label': 'Program:', 'program_placeholder': 'Please select a program'},
-                'program_list': {'title': 'Running Programs'},
-                'controls': {'position_adjust': 'Adjust Position', 'terminate_program': 'Terminate Program', 'terminate_all': 'Terminate All Programs'},
+                'add_program': {'title': 'Add New CG', 'program_label': 'CG Program:', 'program_placeholder': 'Please select a CG program'},
+                'program_list': {'title': 'Running CGs'},
+                'controls': {'position_adjust': 'Adjust Position', 'terminate_program': 'Terminate CG', 'terminate_all': 'Terminate All CGs'},
                 'position_change': {'title': 'Change Position'},
                 'log': {'title': 'Execution Log'}
             },
@@ -39,8 +39,8 @@ class ConfigManager:
             },
             'defaults': {'position': 'top_left', 'window_size': [640, 480]},
             'messages': {
-                'program_selected': 'Program selected: {filename}',
-                'errors': {'no_program_selected': '❌ Please select a program first.'}
+                'program_selected': 'CG selected: {filename}',
+                'errors': {'no_program_selected': '❌ Please select a CG program first.'}
             },
             'default_params': '',
             'monitoring': {'check_interval': 5, 'max_position_attempts': 10, 'position_attempt_interval': 2, 'timeout': 5}

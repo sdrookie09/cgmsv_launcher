@@ -1,4 +1,11 @@
-PyQt6==6.6.1
-pyinstaller>=5.0.0
+# CGMSV Launcher Dependencies
+# Core dependencies for CGMSV Launcher v1.0.0
+
+# Process management
 psutil>=5.8.0
-PyYAML>=6.0 
+
+# Configuration file parsing
+PyYAML>=6.0
+
+# Executable building (optional, for development)
+pyinstaller>=5.0.0 

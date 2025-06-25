@@ -1,15 +1,21 @@
-# CGMSV Launcher
+# CGMSV Launcher v1.0.0
 
-A powerful Python-based launcher that allows you to run multiple cgs simultaneously with automatic window positioning and management. Perfect for managing multiple applications, games, or development tools.
+A powerful Python-based launcher that allows you to run multiple CGMSV instances simultaneously with automatic window positioning and management. Perfect for managing multiple CGMSV servers, development environments, or testing scenarios.
+
+## Version Information
+- **Current Version**: 1.0.0
+- **Release Date**: Initial Release
+- **Author**: sdrookie09
+- **License**: MIT
 
 ## Features
 
-- **Multi-CG Management**: Run and manage multiple cgs simultaneously
+- **Multi-CGMSV Management**: Run and manage multiple CGMSV instances simultaneously
 - **Automatic Window Positioning**: Automatically position windows at predefined locations (6 positions for 1920x1080 resolution)
-- **Real-time Process Monitoring**: Track program status and automatically detect when cg close
-- **Individual CG Control**: Terminate specific CGs or all CGs at once
-- **Position Adjustment**: Change window positions after CGs are running
-- **Hidden Execution**: Run CGs without showing batch/console windows
+- **Real-time Process Monitoring**: Track CGMSV status and automatically detect when instances close
+- **Individual CGMSV Control**: Terminate specific CGMSV instances or all instances at once
+- **Position Adjustment**: Change window positions after CGMSV instances are running
+- **Hidden Execution**: Run CGMSV instances without showing batch/console windows
 - **Configurable Interface**: Customizable UI text and settings via YAML configuration
 - **Cross-Platform**: Works on Windows with Python 3.7+
 
@@ -47,28 +53,28 @@ To create a standalone executable:
 python build_exe.py
 ```
 
-The executable will be created in the `CGMSVLauncher_Package/` directory.
+The executable will be created in the `CGMSVLauncher-v1.0.0_Package/` directory.
 
 ## Usage
 
 ### Basic Operation
 
-1. **Add a Program**
-   - Click "Select File" to choose an executable
+1. **Add a CGMSV Instance**
+   - Click "Select File" to choose a CGMSV executable
    - Enter any command-line parameters (optional)
    - Select the desired window position
-   - Click "Run Program"
+   - Click "Run CG"
 
-2. **Manage Programs**
-   - View all running programs in the list
-   - Select a program to adjust its position
-   - Use "Terminate Program" to close individual programs
-   - Use "Terminate All Programs" to close everything
+2. **Manage CGMSV Instances**
+   - View all running CGMSV instances in the list
+   - Select an instance to adjust its position
+   - Use "Terminate CG" to close individual instances
+   - Use "Terminate All CGs" to close everything
 
 3. **Position Management**
    - 6 predefined positions for 1920x1080 resolution
-   - Automatic position adjustment after program launch
-   - Manual position adjustment for running programs
+   - Automatic position adjustment after CGMSV launch
+   - Manual position adjustment for running instances
 
 ### Window Positions
 
@@ -93,12 +99,12 @@ launcher:
 
 ui:
   add_program:
-    title: "Add New Program"
-    program_label: "Program:"
+    title: "Add New CG"
+    program_label: "CG Program:"
     select_file_button: "Select File"
     param_label: "Parameters:"
     position_label: "Position:"
-    run_button: "Run Program"
+    run_button: "Run CG"
 
 positions:
   top_left:
@@ -108,21 +114,22 @@ positions:
   # ... more positions
 
 messages:
-  program_selected: "Program selected: {filename}"
+  program_selected: "CG selected: {filename}"
   errors:
-    no_program_selected: "❌ Please select a program first."
+    no_program_selected: "❌ Please select a CG program first."
 ```
 
 ## Project Structure
 
 ```
-multi-program-launcher/
+cgmsv_launcher/
 ├── launcher_main.py          # Main entry point
 ├── config_manager.py         # Configuration management
-├── program_manager.py        # Program execution and management
+├── program_manager.py        # CGMSV execution and management
 ├── ui_manager.py            # User interface management
 ├── monitor_manager.py       # Process monitoring
 ├── logger.py                # Logging functionality
+├── version.py               # Version information
 ├── config.yml               # Configuration file
 ├── requirements.txt         # Python dependencies
 ├── build_exe.py            # Build script for executable
@@ -132,13 +139,13 @@ multi-program-launcher/
 ## Features in Detail
 
 ### Hidden Execution
-- Programs are launched using hidden batch files
+- CGMSV instances are launched using hidden batch files
 - No console windows appear during execution
 - Clean, professional appearance
 
 ### Process Tracking
-- Real-time monitoring of program status
-- Automatic detection of program termination
+- Real-time monitoring of CGMSV instance status
+- Automatic detection of instance termination
 - PID tracking for precise control
 
 ### Position Adjustment
@@ -149,7 +156,7 @@ multi-program-launcher/
 ### Error Handling
 - Comprehensive error logging
 - User-friendly error messages
-- Graceful handling of program failures
+- Graceful handling of CGMSV failures
 
 ## Development
 
@@ -183,15 +190,15 @@ This creates a standalone executable with all dependencies included.
 
 ### Common Issues
 
-1. **Program doesn't start**
+1. **CGMSV doesn't start**
    - Check if the executable path is correct
-   - Ensure the program doesn't require admin privileges
+   - Ensure the CGMSV doesn't require admin privileges
    - Verify Visual C++ Redistributable is installed
 
 2. **Window positioning fails**
-   - Some programs may not support window positioning
+   - Some CGMSV instances may not support window positioning
    - Try running the launcher as administrator
-   - Check if the program has a main window
+   - Check if the CGMSV has a main window
 
 3. **PowerShell execution blocked**
    - Check Windows execution policy
@@ -217,7 +224,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Built with Python and Tkinter
 - Uses PowerShell for Windows API integration
-- Inspired by the need for efficient multi-program management
+- Inspired by the need for efficient multi-CGMSV management
 
 ## Support
 

@@ -7,8 +7,9 @@ from program_manager import ProgramManager
 from ui_manager import UIManager
 from monitor_manager import MonitorManager
 from logger import Logger
+from version import __version__
 
-class MultiProgramLauncher:
+class CGMSVLauncher:
     def __init__(self, root):
         self.root = root
         
@@ -17,8 +18,9 @@ class MultiProgramLauncher:
         self.logger = Logger()
         self.program_manager = ProgramManager(self.config_manager, self.logger)
         
-        # Apply launcher settings
-        self.root.title(self.config_manager.config['launcher']['title'])
+        # Apply launcher settings with version
+        title = f"{self.config_manager.config['launcher']['title']} v{__version__}"
+        self.root.title(title)
         self.root.geometry(self.config_manager.config['launcher']['window_size'])
         
         # Initialize UI
@@ -30,14 +32,17 @@ class MultiProgramLauncher:
         # Initialize monitor with UI manager reference
         self.monitor_manager = MonitorManager(self.config_manager, self.program_manager, self.logger, self.ui_manager)
         
-        # Close all programs when launcher closes
+        # Close all CGs when launcher closes
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         
         # Start monitoring
         self.monitor_manager.start_monitoring()
+        
+        # Log startup message
+        self.logger.log(f"CGMSV Launcher v{__version__} started successfully")
     
     def on_closing(self):
-        """Close launcher and terminate all programs"""
+        """Close launcher and terminate all CGs"""
         self.logger.log(self.config_manager.get_message('launcher_closing'))
         self.program_manager.terminate_all_programs()
         self.monitor_manager.stop_monitoring()
@@ -46,7 +51,7 @@ class MultiProgramLauncher:
 
 def main():
     root = tk.Tk()
-    app = MultiProgramLauncher(root)
+    app = CGMSVLauncher(root)
     root.mainloop()
 
 if __name__ == "__main__":

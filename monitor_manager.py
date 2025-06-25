@@ -16,28 +16,28 @@ class MonitorManager:
         self.ui_manager = ui_manager
     
     def start_monitoring(self):
-        """Start program monitoring"""
+        """Start CG monitoring"""
         if self.monitor_thread is None or not self.monitor_thread.is_alive():
             self.is_running = True
             self.monitor_thread = threading.Thread(target=self.monitor_programs, daemon=True)
             self.monitor_thread.start()
     
     def stop_monitoring(self):
-        """Stop program monitoring"""
+        """Stop CG monitoring"""
         self.is_running = False
         if self.monitor_thread and self.monitor_thread.is_alive():
             self.monitor_thread.join(timeout=2)
     
     def monitor_programs(self):
-        """Monitor program status"""
+        """Monitor CG status"""
         check_interval = self.config_manager.config['monitoring']['check_interval']
         
         while self.is_running:
             try:
-                # Check status of each program
+                # Check status of each CG
                 for program_id, info in list(self.program_manager.get_programs().items()):
                     if not self.program_manager.check_program_status(program_id):
-                        # Program was closed, update UI
+                        # CG was closed, update UI
                         if self.ui_manager:
                             self.ui_manager.update_program_list()
                 

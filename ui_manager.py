@@ -27,10 +27,10 @@ class UIManager:
         main_frame = ttk.Frame(self.root, padding="10")
         main_frame.pack(fill=tk.BOTH, expand=True)
         
-        # Top: Add program section
+        # Top: Add CG section
         self.create_add_program_section(main_frame)
         
-        # Middle: Program list
+        # Middle: CG list
         self.create_program_list_section(main_frame)
         
         # Bottom: Control buttons
@@ -40,7 +40,7 @@ class UIManager:
         self.create_log_section(main_frame)
     
     def create_add_program_section(self, parent):
-        """Create add program section"""
+        """Create add CG section"""
         add_frame = ttk.LabelFrame(parent, text=self.config['ui']['add_program']['title'], padding="10")
         add_frame.pack(fill=tk.X, pady=(0, 10))
         
@@ -83,12 +83,12 @@ class UIManager:
         run_button.pack()
     
     def create_program_list_section(self, parent):
-        """Create program list section"""
+        """Create CG list section"""
         list_frame = ttk.LabelFrame(parent, text=self.config['ui']['program_list']['title'], padding="10")
         list_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
         
-        # Program list treeview
-        columns = ('ID', '이름', '상태', '위치', 'PID')
+        # CG list treeview
+        columns = ('ID', 'Name', 'Status', 'Position', 'PID')
         self.program_tree = ttk.Treeview(list_frame, columns=columns, show='headings', height=8)
         
         # Column configuration
@@ -98,9 +98,9 @@ class UIManager:
         # Column mapping (map Korean keys to English column names)
         column_mapping = {
             'id': 'ID',
-            'name': '이름', 
-            'status': '상태',
-            'position': '위치',
+            'name': 'Name', 
+            'status': 'Status',
+            'position': 'Position',
             'pid': 'PID'
         }
         
@@ -117,7 +117,7 @@ class UIManager:
         self.program_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         
-        # Program selection event
+        # CG selection event
         self.program_tree.bind('<<TreeviewSelect>>', self.on_program_select)
     
     def create_control_section(self, parent):
@@ -152,10 +152,10 @@ class UIManager:
         log_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
     
     def select_program_file(self):
-        """Select program file"""
+        """Select CG program file"""
         file_dialog_config = self.config.get('file_dialog', {})
         file_path = filedialog.askopenfilename(
-            title=file_dialog_config.get('title', 'Select Program to Execute'),
+            title=file_dialog_config.get('title', 'Select CG Program to Execute'),
             filetypes=file_dialog_config.get('file_types', [("Executable Files", "*.exe"), ("All Files", "*.*")])
         )
         
@@ -164,7 +164,7 @@ class UIManager:
             self.logger.log(self.config_manager.get_message('program_selected', filename=os.path.basename(file_path)))
     
     def run_program_threaded(self):
-        """Run program in thread"""
+        """Run CG program in thread"""
         import threading
         
         def run_in_thread():
@@ -174,7 +174,7 @@ class UIManager:
         thread.start()
     
     def run_program(self):
-        """Run program"""
+        """Run CG program"""
         program_path = self.path_display.cget("text")
         if program_path == self.config['ui']['add_program']['program_placeholder']:
             self.logger.log(self.config_manager.get_message('errors.no_program_selected'))
@@ -188,7 +188,7 @@ class UIManager:
             self.update_program_list()
     
     def update_program_list(self):
-        """Update program list UI"""
+        """Update CG list UI"""
         def update():
             # Delete existing items
             for item in self.program_tree.get_children():
@@ -210,7 +210,7 @@ class UIManager:
         self.root.after(0, update)
     
     def on_program_select(self, event):
-        """Program selection event"""
+        """CG selection event"""
         selection = self.program_tree.selection()
         if selection:
             item = self.program_tree.item(selection[0])
@@ -218,7 +218,7 @@ class UIManager:
             self.logger.log(self.config_manager.get_message('progress.program_selected_ui', id=program_id))
     
     def adjust_selected_position(self):
-        """Adjust position of selected program"""
+        """Adjust position of selected CG"""
         selection = self.program_tree.selection()
         if not selection:
             self.logger.log(self.config_manager.get_message('errors.no_program_to_adjust'))
@@ -241,7 +241,7 @@ class UIManager:
             self.logger.log(self.config_manager.get_message('errors.program_info_not_found', id=program_id))
     
     def terminate_selected_program(self):
-        """Terminate selected program"""
+        """Terminate selected CG"""
         selection = self.program_tree.selection()
         if not selection:
             self.logger.log(self.config_manager.get_message('errors.no_program_to_terminate'))
@@ -254,7 +254,7 @@ class UIManager:
         self.update_program_list()
     
     def terminate_all_programs(self):
-        """Terminate all programs"""
+        """Terminate all CGs"""
         self.program_manager.terminate_all_programs()
         self.update_program_list()
     

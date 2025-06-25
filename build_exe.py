@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Multi-Program Launcher Build Script
-이 스크립트는 런처를 실행 파일로 빌드합니다.
+CGMSV Launcher Build Script
+This script builds the launcher into an executable file.
 """
 
 import os
@@ -9,9 +9,10 @@ import sys
 import subprocess
 import shutil
 from pathlib import Path
+from version import __version__
 
 def check_dependencies():
-    """필요한 의존성 확인"""
+    """Check required dependencies"""
     print("🔍 Checking dependencies...")
     
     required_packages = ['psutil', 'yaml', 'tkinter']
@@ -40,7 +41,7 @@ def check_dependencies():
     return True
 
 def install_pyinstaller():
-    """PyInstaller 설치"""
+    """Install PyInstaller"""
     print("\n🔧 Installing PyInstaller...")
     try:
         subprocess.run([sys.executable, "-m", "pip", "install", "pyinstaller"], 
@@ -52,24 +53,25 @@ def install_pyinstaller():
         return False
 
 def build_executable():
-    """실행 파일 빌드"""
-    print("\n🏗️ Building executable...")
+    """Build executable file"""
+    print(f"\n🏗️ Building CGMSV Launcher v{__version__}...")
     
-    # PyInstaller 명령어 구성
+    # PyInstaller command configuration
     cmd = [
         "pyinstaller",
-        "--onefile",                    # 단일 파일로 생성
-        "--windowed",                   # 콘솔 창 숨김
-        "--name=MultiProgramLauncher",  # 실행 파일 이름
-        "--icon=icon6.0.ico",              # 아이콘 (있는 경우)
-        "--add-data=config.yml;.",      # 설정 파일 포함
-        "--hidden-import=tkinter",      # tkinter 명시적 포함
-        "--hidden-import=tkinter.ttk",  # ttk 명시적 포함
-        "--hidden-import=tkinter.filedialog",  # filedialog 명시적 포함
+        "--onefile",                    # Create single file
+        "--windowed",                   # Hide console window
+        f"--name=CGMSVLauncher-v{__version__}",  # Executable name with version
+        "--icon=icon6.0.ico",           # Icon (if available)
+        "--add-data=config.yml;.",      # Include config file
+        "--add-data=version.py;.",      # Include version file
+        "--hidden-import=tkinter",      # Explicitly include tkinter
+        "--hidden-import=tkinter.ttk",  # Explicitly include ttk
+        "--hidden-import=tkinter.filedialog",  # Explicitly include filedialog
         "launcher_main.py"
     ]
     
-    # 아이콘이 없으면 제거
+    # Remove icon if not available
     if not os.path.exists("icon.ico"):
         cmd.remove("--icon=icon.ico")
     
@@ -83,7 +85,7 @@ def build_executable():
         return False
 
 def create_distribution():
-    """배포 패키지 생성"""
+    """Create distribution package"""
     print("\n📦 Creating distribution package...")
     
     dist_dir = Path("dist")
@@ -91,14 +93,14 @@ def create_distribution():
         print("❌ dist directory not found. Build may have failed.")
         return False
     
-    # 배포 폴더 생성
-    package_dir = Path("MultiProgramLauncher_Package")
+    # Create distribution folder
+    package_dir = Path(f"CGMSVLauncher-v{__version__}_Package")
     if package_dir.exists():
         shutil.rmtree(package_dir)
     package_dir.mkdir()
     
-    # 실행 파일 복사
-    exe_file = dist_dir / "MultiProgramLauncher.exe"
+    # Copy executable
+    exe_file = dist_dir / f"CGMSVLauncher-v{__version__}.exe"
     if exe_file.exists():
         shutil.copy2(exe_file, package_dir)
         print(f"✅ Copied {exe_file.name}")
@@ -106,66 +108,96 @@ def create_distribution():
         print(f"❌ Executable not found: {exe_file}")
         return False
     
-    # 설정 파일 복사
+    # Copy config file
     if os.path.exists("config.yml"):
         shutil.copy2("config.yml", package_dir)
         print("✅ Copied config.yml")
     
-    # README 파일 복사
-    if os.path.exists("README_MODULAR.md"):
-        shutil.copy2("README_MODULAR.md", package_dir)
-        print("✅ Copied README_MODULAR.md")
+    # Copy README file
+    if os.path.exists("README.md"):
+        shutil.copy2("README.md", package_dir)
+        print("✅ Copied README.md")
     
-    # 사용법 파일 생성
+    # Copy version file
+    if os.path.exists("version.py"):
+        shutil.copy2("version.py", package_dir)
+        print("✅ Copied version.py")
+    
+    # Create usage file
     create_usage_file(package_dir)
+    
+    # Create version info file
+    create_version_info(package_dir)
     
     print(f"✅ Distribution package created: {package_dir}")
     return True
 
 def create_usage_file(package_dir):
-    """사용법 파일 생성"""
-    usage_content = """# Multi-Program Launcher 사용법
+    """Create usage file"""
+    usage_content = f"""# CGMSV Launcher v{__version__} Usage Guide
 
-## 실행 방법
-1. MultiProgramLauncher.exe를 더블클릭하여 실행
-2. 또는 명령 프롬프트에서 `MultiProgramLauncher.exe` 실행
+## How to Run
+1. Double-click CGMSVLauncher-v{__version__}.exe to run
+2. Or run `CGMSVLauncher-v{__version__}.exe` from command prompt
 
-## 주요 기능
-- 여러 프로그램을 동시에 실행
-- 각 프로그램 창을 지정된 위치로 자동 이동
-- 실시간 프로그램 상태 모니터링
-- 개별 프로그램 위치 조정 및 종료
+## Main Features
+- Run multiple CGs simultaneously
+- Automatically move each CG window to specified position
+- Real-time CG status monitoring
+- Individual CG position adjustment and termination
 
-## 설정 파일
-- config.yml 파일을 수정하여 UI 텍스트, 위치 설정 등을 커스터마이징 가능
-- 설정 파일이 없으면 기본 설정으로 실행
+## Configuration File
+- Modify config.yml file to customize UI text, position settings, etc.
+- If config file is missing, runs with default settings
 
-## 시스템 요구사항
+## System Requirements
 - Windows 10/11
-- .NET Framework 4.5 이상 (대부분의 Windows에 기본 설치됨)
+- .NET Framework 4.5 or higher (installed by default on most Windows)
 
-## 문제 해결
-- 실행이 안 되는 경우: Visual C++ Redistributable 설치 필요
-- 창 위치 조정이 안 되는 경우: 관리자 권한으로 실행해보세요
+## Troubleshooting
+- If execution fails: Visual C++ Redistributable installation required
+- If window positioning doesn't work: Try running as administrator
 
-## 지원
-문제가 발생하면 README_MODular.md 파일을 참조하세요.
+## Support
+If problems occur, refer to README.md file.
 """
     
-    with open(package_dir / "사용법.txt", "w", encoding="utf-8") as f:
+    with open(package_dir / "Usage.txt", "w", encoding="utf-8") as f:
         f.write(usage_content)
-    print("✅ Created usage.txt")
+    print("✅ Created Usage.txt")
+
+def create_version_info(package_dir):
+    """Create version info file"""
+    version_info = f"""CGMSV Launcher v{__version__}
+
+Build Information:
+- Version: {__version__}
+- Author: sdrookie09
+- License: MIT
+- Description: Multi-CGMSV Instance Manager
+
+Release Notes:
+- Initial release
+- Multi-CGMSV instance management
+- Automatic window positioning
+- Real-time process monitoring
+- Configurable UI and settings
+"""
+    
+    with open(package_dir / "VERSION.txt", "w", encoding="utf-8") as f:
+        f.write(version_info)
+    print("✅ Created VERSION.txt")
 
 def main():
-    """메인 빌드 프로세스"""
-    print("🚀 Multi-Program Launcher Build Process")
+    """Main build process"""
+    print(f"🚀 CGMSV Launcher v{__version__} Build Process")
     print("=" * 50)
     
-    # 1. 의존성 확인
+    # 1. Check dependencies
     if not check_dependencies():
         return False
     
-    # 2. PyInstaller 설치 확인
+    # 2. Check PyInstaller installation
     try:
         import PyInstaller
         print("✅ PyInstaller is already installed")
@@ -173,18 +205,18 @@ def main():
         if not install_pyinstaller():
             return False
     
-    # 3. 빌드 실행
+    # 3. Execute build
     if not build_executable():
         return False
     
-    # 4. 배포 패키지 생성
+    # 4. Create distribution package
     if not create_distribution():
         return False
     
-    print("\n🎉 Build process completed successfully!")
-    print("\n📁 Distribution package: MultiProgramLauncher_Package/")
-    print("📄 Executable: MultiProgramLauncher_Package/MultiProgramLauncher.exe")
-    print("\n💡 Tip: MultiProgramLauncher_Package 폴더 전체를 배포하세요.")
+    print(f"\n🎉 CGMSV Launcher v{__version__} build process completed successfully!")
+    print(f"\n📁 Distribution package: CGMSVLauncher-v{__version__}_Package/")
+    print(f"📄 Executable: CGMSVLauncher-v{__version__}_Package/CGMSVLauncher-v{__version__}.exe")
+    print(f"\n💡 Tip: Deploy the entire CGMSVLauncher-v{__version__}_Package folder.")
     
     return True
 

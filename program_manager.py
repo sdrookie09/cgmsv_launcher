@@ -11,10 +11,10 @@ class ProgramManager:
         self.logger = logger
         self.programs = {}  # {program_id: {'path': path, 'name': name, 'process': process, 'position': (x,y), 'status': status}}
         self.next_program_id = 1
-        self.batch_files = {}  # {program_id: batch_file_path} - 배치 파일 경로 추적
+        self.batch_files = {}  # {program_id: batch_file_path} - Track batch file paths
     
     def run_program(self, program_path, params, position_name):
-        """Run program using hidden batch file"""
+        """Run CG program using hidden batch file"""
         if not os.path.exists(program_path):
             self.logger.log(self.config_manager.get_message('errors.program_not_found', path=program_path))
             return None
@@ -39,35 +39,35 @@ cd /d "{program_dir}"
 start "" "{program_name}" {params}
 """
             
-            # 임시 디렉토리에 숨겨진 배치 파일 생성
+            # Create hidden batch file in temp directory
             temp_dir = tempfile.gettempdir()
             temp_bat = os.path.join(temp_dir, f"temp_program_{program_id}.bat")
             
             with open(temp_bat, "w", encoding="cp949") as f:
                 f.write(batch_content)
             
-            # 배치 파일을 숨김 속성으로 설정
+            # Set batch file as hidden
             try:
                 import win32file
                 win32file.SetFileAttributes(temp_bat, win32file.FILE_ATTRIBUTE_HIDDEN)
             except ImportError:
                 pass
             
-            # 배치 파일을 완전히 숨겨진 상태로 실행
+            # Execute batch file completely hidden
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             startupinfo.wShowWindow = subprocess.SW_HIDE
             
-            # cmd /c를 사용하여 배치 파일을 숨겨진 상태로 실행
+            # Use cmd /c to execute batch file in hidden state
             process = subprocess.Popen(['cmd', '/c', temp_bat], 
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                                      startupinfo=startupinfo,
                                      creationflags=subprocess.CREATE_NO_WINDOW | subprocess.DETACHED_PROCESS)
             
-            # 배치 파일 경로 저장
+            # Save batch file path
             self.batch_files[program_id] = temp_bat
             
-            # Save program information
+            # Save CG information
             self.programs[program_id] = {
                 'path': program_path,
                 'name': program_name,
@@ -87,15 +87,15 @@ start "" "{program_name}" {params}
             return None
     
     def cleanup_batch_file(self, program_id):
-        """배치 파일 정리"""
+        """Clean up batch file"""
         if program_id in self.batch_files:
             batch_file = self.batch_files[program_id]
             try:
                 if os.path.exists(batch_file):
                     os.remove(batch_file)
-                    self.logger.log(f"배치 파일 삭제됨: {batch_file}")
+                    self.logger.log(f"Batch file deleted: {batch_file}")
             except Exception as e:
-                self.logger.log(f"배치 파일 삭제 실패: {e}")
+                self.logger.log(f"Failed to delete batch file: {e}")
             finally:
                 del self.batch_files[program_id]
     
@@ -116,7 +116,7 @@ start "" "{program_name}" {params}
             attempt_interval = self.config_manager.config['monitoring']['position_attempt_interval']
             timeout = self.config_manager.config['monitoring']['timeout']
             
-            # 파이썬에서 대기 (2초)
+            # Wait in Python (2 seconds)
             time.sleep(2)
             
             for attempt in range(1, max_attempts + 1):
@@ -139,7 +139,7 @@ start "" "{program_name}" {params}
         thread.start()
     
     def _adjust_position_powershell(self, program_info, x, y, tracked_pids):
-        """PowerShell을 사용한 위치 조정"""
+        """Position adjustment using PowerShell"""
         try:
             process_name = program_info['process_name']
             timeout = self.config_manager.config['monitoring']['timeout']
@@ -152,16 +152,16 @@ start "" "{program_name}" {params}
                         $hwnd = $proc.MainWindowHandle
                         $result = [User32.WinApi]::SetWindowPos($hwnd, 0, {x}, {y}, 640, 480, 0x0000)
                         if ($result) {{
-                            Write-Host \"성공\"
+                            Write-Host \"Success\"
                             Write-Host $proc.Id
                         }} else {{
-                            Write-Host \"실패\"
+                            Write-Host \"Failed\"
                         }}
                     }} else {{
-                        Write-Host \"창 없음\"
+                        Write-Host \"No window\"
                     }}
                 }} catch {{
-                    Write-Host \"프로세스 없음\"
+                    Write-Host \"Process not found\"
                 }}
                 """
             else:
@@ -176,16 +176,16 @@ start "" "{program_name}" {params}
                             $hwnd = $proc.MainWindowHandle
                             $result = [User32.WinApi]::SetWindowPos($hwnd, 0, {x}, {y}, 640, 480, 0x0000)
                             if ($result) {{
-                                Write-Host \"성공\"
+                                Write-Host \"Success\"
                                 Write-Host $proc.Id
                             }} else {{
-                                Write-Host \"실패\"
+                                Write-Host \"Failed\"
                             }}
                             break
                         }}
                     }}
                 }} else {{
-                    Write-Host \"프로세스 없음\"
+                    Write-Host \"Process not found\"
                 }}
                 """
             startupinfo = subprocess.STARTUPINFO()
@@ -195,7 +195,7 @@ start "" "{program_name}" {params}
                                   capture_output=True, text=True, timeout=timeout,
                                   startupinfo=startupinfo,
                                   creationflags=subprocess.CREATE_NO_WINDOW)
-            if "성공" in result.stdout:
+            if "Success" in result.stdout:
                 lines = result.stdout.strip().split('\n')
                 if len(lines) >= 2:
                     return int(lines[1])
@@ -205,7 +205,7 @@ start "" "{program_name}" {params}
             return None
     
     def adjust_program_position(self, program_id, x, y):
-        """Adjust position of specific program using PowerShell"""
+        """Adjust position of specific CG using PowerShell"""
         def adjust():
             if program_id not in self.programs:
                 return
@@ -224,7 +224,7 @@ start "" "{program_name}" {params}
         thread.start()
     
     def terminate_program(self, program_id):
-        """Terminate specific program"""
+        """Terminate specific CG"""
         if program_id not in self.programs:
             self.logger.log(self.config_manager.get_message('errors.program_info_not_found', id=program_id))
             return
@@ -261,7 +261,7 @@ start "" "{program_name}" {params}
             self.logger.log(self.config_manager.get_message('errors.terminate_error', id=program_id, error=str(e)))
     
     def terminate_all_programs(self):
-        """Terminate all programs"""
+        """Terminate all CGs"""
         self.logger.log(self.config_manager.get_message('progress.all_programs_terminating'))
         program_ids = list(self.programs.keys())
         for program_id in program_ids:
@@ -274,7 +274,7 @@ start "" "{program_name}" {params}
         self.logger.log(self.config_manager.get_message('all_programs_terminated'))
     
     def update_program_position(self, program_id, position_name):
-        """Update program position information"""
+        """Update CG position information"""
         if program_id in self.programs:
             x, y = self.config_manager.get_position_coords(position_name)
             self.programs[program_id]['position'] = (x, y)
@@ -282,15 +282,15 @@ start "" "{program_name}" {params}
         return False
     
     def get_programs(self):
-        """Get all programs"""
+        """Get all CGs"""
         return self.programs
     
     def get_program(self, program_id):
-        """Get specific program"""
+        """Get specific CG"""
         return self.programs.get(program_id)
     
     def check_program_status(self, program_id):
-        """Check if program is still running"""
+        """Check if CG is still running"""
         if program_id not in self.programs:
             return False
         program_info = self.programs[program_id]
@@ -299,13 +299,13 @@ start "" "{program_name}" {params}
                 proc = psutil.Process(program_info['pid'])
                 if not proc.is_running():
                     self.logger.log(self.config_manager.get_message('program_closed', id=program_id))
-                    # Clean up batch file when program closes
+                    # Clean up batch file when CG closes
                     self.cleanup_batch_file(program_id)
                     del self.programs[program_id]
                     return False
             except psutil.NoSuchProcess:
                 self.logger.log(self.config_manager.get_message('program_closed', id=program_id))
-                # Clean up batch file when program closes
+                # Clean up batch file when CG closes
                 self.cleanup_batch_file(program_id)
                 del self.programs[program_id]
                 return False

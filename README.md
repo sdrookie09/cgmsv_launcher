@@ -1,15 +1,15 @@
-# Multi-Program Launcher
+# CGMSV Launcher
 
-A powerful Python-based launcher that allows you to run multiple programs simultaneously with automatic window positioning and management. Perfect for managing multiple applications, games, or development tools.
+A powerful Python-based launcher that allows you to run multiple cgs simultaneously with automatic window positioning and management. Perfect for managing multiple applications, games, or development tools.
 
 ## Features
 
-- **Multi-Program Management**: Run and manage multiple programs simultaneously
+- **Multi-CG Management**: Run and manage multiple cgs simultaneously
 - **Automatic Window Positioning**: Automatically position windows at predefined locations (6 positions for 1920x1080 resolution)
-- **Real-time Process Monitoring**: Track program status and automatically detect when programs close
-- **Individual Program Control**: Terminate specific programs or all programs at once
-- **Position Adjustment**: Change window positions after programs are running
-- **Hidden Execution**: Run programs without showing batch/console windows
+- **Real-time Process Monitoring**: Track program status and automatically detect when cg close
+- **Individual CG Control**: Terminate specific CGs or all CGs at once
+- **Position Adjustment**: Change window positions after CGs are running
+- **Hidden Execution**: Run CGs without showing batch/console windows
 - **Configurable Interface**: Customizable UI text and settings via YAML configuration
 - **Cross-Platform**: Works on Windows with Python 3.7+
 
@@ -25,8 +25,8 @@ A powerful Python-based launcher that allows you to run multiple programs simult
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/[YOUR_USERNAME]/multi-program-launcher.git
-   cd multi-program-launcher
+   git clone https://github.com/[YOUR_USERNAME]/cgmsv_launcher.git
+   cd cgmsv_launcher
    ```
 
 2. **Install dependencies**
@@ -47,7 +47,7 @@ To create a standalone executable:
 python build_exe.py
 ```
 
-The executable will be created in the `MultiProgramLauncher_Package/` directory.
+The executable will be created in the `CGMSVLauncher_Package/` directory.
 
 ## Usage
 
@@ -87,7 +87,7 @@ The launcher uses `config.yml` for all settings and text customization:
 
 ```yaml
 launcher:
-  title: "Multi-Program Launcher"
+  title: "CGMSV Launcher"
   window_size: "900x700"
   log_height: 12
 

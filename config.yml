@@ -1,0 +1,146 @@
+# Multi-Program Launcher Configuration File
+# Modify this file to customize all text and settings of the launcher.
+
+# Launcher basic settings
+launcher:
+  title: "Multi-Program Launcher"
+  window_size: "1030x700"
+  log_height: 12
+
+# UI text
+ui:
+  # Add program section
+  add_program:
+    title: "Add New Program"
+    program_label: "Program:"
+    program_placeholder: "Please select a program"
+    select_file_button: "Select File"
+    param_label: "Parameters:"
+    param_placeholder: "e.g., -mode debug -loglevel info"
+    position_label: "Default Position:"
+    run_button: "Run Program"
+  
+  # Program list section
+  program_list:
+    title: "Running Programs"
+    columns:
+      id: "ID"
+      name: "Program Name"
+      status: "Status"
+      position: "Position"
+      pid: "PID"
+    column_widths:
+      id: 50
+      name: 200
+      status: 100
+      position: 150
+      pid: 80
+  
+  # Control buttons
+  controls:
+    position_adjust: "Adjust Position"
+    terminate_program: "Terminate Program"
+    terminate_all: "Terminate All Programs"
+  
+  # Position change section
+  position_change:
+    title: "Change Position"
+  
+  # Log section
+  log:
+    title: "Execution Log"
+
+# Position settings
+positions:
+  top_left:
+    name: "Top Left"
+    display: "Top Left (0, 0)"
+    coords: [0, 0]
+  top_mid:
+    name: "Top Center"
+    display: "Top Center (640, 0)"
+    coords: [640, 0]
+  top_right:
+    name: "Top Right"
+    display: "Top Right (1280, 0)"
+    coords: [1280, 0]
+  bottom_left:
+    name: "Bottom Left"
+    display: "Bottom Left (0, 480)"
+    coords: [0, 480]
+  bottom_mid:
+    name: "Bottom Center"
+    display: "Bottom Center (640, 480)"
+    coords: [640, 480]
+  bottom_right:
+    name: "Bottom Right"
+    display: "Bottom Right (1280, 480)"
+    coords: [1280, 480]
+
+# Default settings
+defaults:
+  position: "top_left"
+  window_size: [640, 480]
+
+# Log messages
+messages:
+  # General messages
+  program_selected: "Program selected: {filename}"
+  program_execution_start: "=== Program {id} execution started ==="
+  program_name: "Program: {name}"
+  position_set: "Position: {position}"
+  auto_position_start: "Program {id} auto position adjustment started..."
+  position_adjust_success: "✅ Program {id} position adjustment successful (PID: {pid})"
+  position_adjust_failed: "⚠️ Program {id} auto position adjustment failed"
+  position_adjust_manual_success: "✅ Program {id} position adjustment successful"
+  program_terminated: "✅ Program {id} terminated (PID: {pid})"
+  all_programs_terminated: "✅ All programs terminated"
+  program_closed: "Program {id} has been closed"
+  launcher_closing: "=== Launcher closing - terminating all programs ==="
+  
+  # Error messages
+  errors:
+    no_program_selected: "❌ Please select a program first."
+    program_not_found: "❌ Program not found: {path}"
+    program_execution_error: "❌ Program {id} execution error: {error}"
+    no_program_to_adjust: "❌ Please select a program to adjust."
+    program_info_not_found: "❌ Program {id} information not found."
+    no_program_to_terminate: "❌ Please select a program to terminate."
+    position_adjust_error: "❌ Program {id} position adjustment error: {error}"
+    terminate_error: "❌ Program {id} termination error: {error}"
+    monitoring_error: "Monitoring error: {error}"
+  
+  # Warning messages
+  warnings:
+    process_not_found: "⚠️ Program {id} process not found"
+    window_not_found: "⚠️ Program {id} window not found"
+    process_already_terminated: "⚠️ Program {id} process already terminated (PID: {pid})"
+    position_adjust_failed: "⚠️ Program {id} auto position adjustment failed"
+  
+  # Progress messages
+  progress:
+    waiting_for_process: "Program {id} attempt {attempt}: waiting for process..."
+    waiting_for_window: "Program {id} attempt {attempt}: window not yet appeared..."
+    position_adjust_failed_attempt: "Program {id} attempt {attempt}: position adjustment failed"
+    attempt_error: "Program {id} attempt {attempt} error: {error}"
+    program_terminating: "Program {id} terminating..."
+    all_programs_terminating: "=== Terminating all programs ==="
+    program_selected_ui: "Program {id} selected"
+    position_adjusting: "Program {id} position adjusting: {position}"
+
+# CGMSV default parameters
+default_params: "3Ddevice:4 updated graphicbin:66 graphicinfobin:66 animebin:4 animeinfobin:4 graphicbinex:5 graphicinfobinex:5 animebinex:1 animeinfobinex:1 graphicbinv3:19 graphicinfobinv3:19 animebinv3:8 animeinfobinv3:8 graphicbin_puk2:2 graphicinfobin_puk2:2 animebin_puk2:4 animeinfobin_puk2:4 graphicbin_puk3:1 graphicinfobin_puk3:1 animebin_puk3:2 animeinfobin_puk3:2 coordinatebinv3:11 coordinateinfobinv3:11 graphicbin_joy:125 graphicinfobin_joy:125 animebin_joy:91 animeinfobin_joy:91 graphicinfobin_joy_ex:111 graphicbin_joy_ex:111 animebin_joy_ex:107 animeinfobin_joy_ex:107 graphicinfobin_joy_ch:1 graphicbin_joy_ch:1 animebin_joy_ch:1 animebin_joy_ch:1 IP:0:127.0.0.1:9030"
+
+# File selection settings
+file_dialog:
+  title: "Select Program to Execute"
+  file_types:
+    - ["Executable Files", "*.exe"]
+    - ["All Files", "*.*"]
+
+# Monitoring settings
+monitoring:
+  check_interval: 5  # seconds
+  max_position_attempts: 10
+  position_attempt_interval: 2  # seconds
+  timeout: 5  # seconds 
